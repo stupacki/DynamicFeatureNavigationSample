@@ -27,13 +27,7 @@ class NotificationsFragment : Fragment(), NotificationsNavigator {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.text.observe(this.viewLifecycleOwner, Observer {
-            notificationsTextView.text = it
-        })
-
-        toHomeFeatureButton.setOnClickListener {
-            toHomeFeature()
-        }
+        viewModel.text.observe(this.viewLifecycleOwner, Observer { notificationsTextView.text = it })
+        toHomeFeatureButton.setOnClickListener { toHomeFeature() }
     }
 }

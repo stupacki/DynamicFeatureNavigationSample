@@ -7,6 +7,6 @@ import com.stupacki.sample.app.navigation.common.Navigator
 interface NotificationsNavigator : Navigator {
 
     fun Fragment.toHomeFeature() {
-        getNavController(this).navigate(R.id.toHomeFeature)
+        getNavController(this).navigate(R.id.navigation_home)
     }
 }
