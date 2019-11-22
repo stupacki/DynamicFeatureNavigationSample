@@ -3,41 +3,36 @@ package com.stupacki.sample.app.navigation.main.view
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.stupacki.sample.app.navigation.R
-import com.stupacki.sample.app.navigation.main.injection.MainNavigationComponent
-import com.stupacki.sample.app.navigation.main.viewmodel.BottomNavVisibleState
-import com.stupacki.sample.app.navigation.main.viewmodel.MainNavigationViewModel
 import kotlinx.android.synthetic.main.activity_main_navigation.*
-import org.rewedigital.katana.androidx.viewmodel.viewModel
 
-abstract class MainNavigationActivity : AppCompatActivity() {
-
-    private val navController by lazy { findNavController(R.id.mainNavHost) }
-    private val component by lazy { MainNavigationComponent() }
-
-    private val viewModel by component.viewModel<MainNavigationViewModel>(this)
+open class MainNavigationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main_navigation)
 
-        navController.setGraph(R.navigation.navigation_main)
+        val navigation = findNavController(R.id.mainNavHost)
 
-        bottomNavView.setupWithNavController(navController)
-        bottomNavView.inflateMenu(R.menu.bottom_nav_menu)
-
-        viewModel.bottomNavState.observe(this, Observer { onBottomNavStateChange(it) })
+        bottomNavView.setupWithNavController(navigation)
+        bottomNavView.setOnNavigationItemReselectedListener { Unit }
+        navigation.addOnDestinationChangedListener(onDestinationChangedListener)
     }
 
-    private fun onBottomNavStateChange(state: BottomNavVisibleState?) {
-        when (state) {
-            is BottomNavVisibleState.Hidden -> hideBottomNav()
-            is BottomNavVisibleState.Shown -> showBottomNav()
-        }
+    private fun shouldHideNavigation(controller: NavController, destination: NavDestination): Boolean {
+        val destinationGraph = destination.parent
+        val isGraphIncluded = controller.graph.contains(destinationGraph)
+
+        return destinationGraph?.startDestination?.let { id ->
+            val isStartDestination = id == destination.id
+
+            return !isStartDestination || !isGraphIncluded
+        } ?: false
     }
 
     private fun hideBottomNav() {
@@ -47,4 +42,13 @@ abstract class MainNavigationActivity : AppCompatActivity() {
     private fun showBottomNav() {
         bottomNavView.visibility = View.VISIBLE
     }
+
+    private val onDestinationChangedListener = NavController.OnDestinationChangedListener { navController, navDestination, _ ->
+        when ( shouldHideNavigation(navController, navDestination) ) {
+            true -> hideBottomNav()
+            else -> showBottomNav()
+        }
+    }
 }
+
+
