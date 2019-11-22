@@ -35,6 +35,10 @@ dependencies {
     //Android
     api libraries.navigationFragment
     api libraries.navigationUI
+    implementation libraries.lifecycleExtensions
+    implementation libraries.liveData
+    implementation libraries.liveData_ktx
+    implementation libraries.viewModel_ktx
 
     implementation libraries.katanaCore
 

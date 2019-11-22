@@ -3,12 +3,9 @@ package com.stupacki.sample.app.navigation.notifications
 import androidx.navigation.NavController
 import com.stupacki.sample.app.navigation.main.MainNavigation
 
-class NotificationsNavigation(
-    private val navController: NavController,
-    private val mainNavigation: MainNavigation
-) {
+object NotificationsNavigation {
 
-    fun toHomeFeature() {
-        mainNavigation.navigateToHomeFeature()
+    fun toHomeFeature(navController: NavController) {
+        MainNavigation.navigateToHomeFeature(navController)
     }
 }

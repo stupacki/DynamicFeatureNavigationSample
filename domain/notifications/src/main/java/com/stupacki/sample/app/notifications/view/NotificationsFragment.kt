@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.stupacki.sample.app.navigation.notifications.NotificationsNavigation
 import com.stupacki.sample.app.notifications.R
 import com.stupacki.sample.app.notifications.injection.NotificationsComponent
@@ -14,6 +15,8 @@ import kotlinx.android.synthetic.main.fragment_notifications.*
 import org.rewedigital.katana.androidx.viewmodel.viewModel
 
 class NotificationsFragment : Fragment() {
+
+    private val navController by lazy { findNavController() }
 
     private val component by lazy { NotificationsComponent() }
     private val viewModel by component.viewModel<NotificationsViewModel>(this)
@@ -34,7 +37,7 @@ class NotificationsFragment : Fragment() {
         })
 
         toHomeFeatureButton.setOnClickListener {
-            notificationsNavigation.toHomeFeature()
+            NotificationsNavigation.toHomeFeature(navController)
         }
     }
 }

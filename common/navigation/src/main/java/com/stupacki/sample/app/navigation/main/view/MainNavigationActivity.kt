@@ -1,30 +1,53 @@
 package com.stupacki.sample.app.navigation.main.view
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.stupacki.sample.app.core.CoreApplication
 import com.stupacki.sample.app.navigation.R
-import com.stupacki.sample.app.navigation.injection.NavigationModule
+import com.stupacki.sample.app.navigation.main.injection.MainNavigationComponent
+import com.stupacki.sample.app.navigation.main.provider.BottomNavProvider
+import com.stupacki.sample.app.navigation.main.viewmodel.BottomNavVisibleState
+import com.stupacki.sample.app.navigation.main.viewmodel.MainNavigationViewModel
 import kotlinx.android.synthetic.main.activity_main_navigation.*
-import org.rewedigital.katana.Component
+import org.rewedigital.katana.androidx.viewmodel.viewModel
 
 class MainNavigationActivity : AppCompatActivity() {
 
     private val navController by lazy { findNavController(R.id.mainNavHost) }
 
-    private val module by lazy { NavigationModule(navController) }
-    private val component by lazy { Component(modules = listOf(module)) }
+    private val component by lazy { MainNavigationComponent() }
+
+    private val viewModel by component.viewModel<MainNavigationViewModel>(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main_navigation)
 
-        //Injection must happened before adding the graph, otherwise the first click will fail
-        CoreApplication.addModule(module)
+        viewModel.bottomNavState.observe(this, Observer(::onBottomNavStateChange))
 
+        bindNavigationViews()
+    }
+
+    private fun onBottomNavStateChange(state: BottomNavVisibleState?) {
+        when (state) {
+            is BottomNavVisibleState.Hidden -> hideBottomNav()
+            is BottomNavVisibleState.Shown -> showBottomNav()
+        }
+    }
+
+    private fun hideBottomNav() {
+        bottomNavView.visibility == View.GONE
+    }
+
+    private fun showBottomNav() {
+        bottomNavView.visibility == View.VISIBLE
+    }
+
+    private fun bindNavigationViews() {
         navController.setGraph(R.navigation.navigation_main)
 
         bottomNavView.setupWithNavController(navController)

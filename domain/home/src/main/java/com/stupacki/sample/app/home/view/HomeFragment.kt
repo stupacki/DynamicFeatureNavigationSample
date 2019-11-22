@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.stupacki.sample.app.home.R
 import com.stupacki.sample.app.home.injection.HomeComponent
@@ -17,9 +16,10 @@ import org.rewedigital.katana.androidx.viewmodel.viewModel
 
 internal class HomeFragment : Fragment() {
 
+    private val navController by lazy { findNavController() }
+
     private val component by lazy { HomeComponent() }
     private val viewModel by component.viewModel<HomeViewModel>(this)
-    private val homeNavigation by component.inject<HomeNavigation>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +36,7 @@ internal class HomeFragment : Fragment() {
         })
 
         toHomeDetailButton.setOnClickListener {
-            homeNavigation.navigateToHomeDetail()
+            HomeNavigation.navigateToHomeDetail(navController)
         }
     }
 }

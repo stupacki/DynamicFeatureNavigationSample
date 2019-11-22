@@ -17,6 +17,7 @@ import org.rewedigital.katana.androidx.viewmodel.viewModel
 internal class HomeDetailFragment : Fragment() {
 
     private val component by lazy { HomeDetailComponent() }
+    
     private val viewModel by component.viewModel<HomeDetailViewModel>(this)
     private val homeNavigation by component.inject<HomeNavigation>()
 
@@ -37,7 +38,7 @@ internal class HomeDetailFragment : Fragment() {
         })
 
         toHomeButton.setOnClickListener {
-            homeNavigation.navigateBackToHome()
+            HomeNavigation.navigateBack(navController)
         }
     }
 }
