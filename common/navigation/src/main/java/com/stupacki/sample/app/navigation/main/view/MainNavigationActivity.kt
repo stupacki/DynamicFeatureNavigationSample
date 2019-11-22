@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.stupacki.sample.app.navigation.R
+import com.stupacki.sample.app.navigation.main.extensions.setupNavigationVisibility
 import kotlinx.android.synthetic.main.activity_main_navigation.*
 
 open class MainNavigationActivity : AppCompatActivity() {

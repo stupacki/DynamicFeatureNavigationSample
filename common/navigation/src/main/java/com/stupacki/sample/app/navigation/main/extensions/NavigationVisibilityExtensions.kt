@@ -1,4 +1,4 @@
-package com.stupacki.sample.app.navigation.main.view
+package com.stupacki.sample.app.navigation.main.extensions
 
 import android.os.Bundle
 import android.view.MenuItem
@@ -9,7 +9,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.lang.ref.WeakReference
 
 fun BottomNavigationView.setupNavigationVisibility(navigation: NavController) {
-    navigation.addOnDestinationChangedListener(DestinationListener(this))
+    navigation.addOnDestinationChangedListener(
+        NavigationDestinationVisibilityProvider(
+            this
+        )
+    )
 }
 
 private fun BottomNavigationView.open() {
@@ -20,7 +24,7 @@ private fun BottomNavigationView.close() {
     visibility = View.GONE
 }
 
-class DestinationListener(bottomNavigationView: BottomNavigationView): NavController.OnDestinationChangedListener {
+class NavigationDestinationVisibilityProvider(bottomNavigationView: BottomNavigationView): NavController.OnDestinationChangedListener {
 
     private val navigationView: WeakReference<BottomNavigationView> = WeakReference( bottomNavigationView )
 
@@ -31,15 +35,11 @@ class DestinationListener(bottomNavigationView: BottomNavigationView): NavContro
         }
     }
 
-    private fun shouldShowNavigation(destination: NavDestination): Boolean {
-        val menuHasDestinationEntryPoint = isDestinationInBottomNavigation(destination)
+    private fun shouldShowNavigation(destination: NavDestination): Boolean =
+        isStartDestination(destination) && isDestinationInBottomNavigation(destination)
 
-        return destination.parent?.startDestination?.let { id ->
-            val isStartDestination = id == destination.id
-
-            return isStartDestination && menuHasDestinationEntryPoint
-        } ?: false
-    }
+    private fun isStartDestination(destination: NavDestination) =
+        destination.id == destination.parent?.startDestination
 
     private fun isDestinationInBottomNavigation(destination: NavDestination): Boolean =
         navigationView.get()?.let { bottomNavView ->
