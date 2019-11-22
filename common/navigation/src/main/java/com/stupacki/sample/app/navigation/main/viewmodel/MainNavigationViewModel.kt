@@ -17,7 +17,7 @@ class MainNavigationViewModel : ViewModel() {
 
     val bottomNavState = _bottomNavState
 
-    val onHideBottomNav: () -> Unit
+    private val onHideBottomNav: () -> Unit
         get() = {
             when (_bottomNavState.value) {
                 !is Hidden -> _bottomNavState.value = Hidden
