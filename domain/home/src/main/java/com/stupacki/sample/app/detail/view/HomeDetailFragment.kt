@@ -33,7 +33,7 @@ internal class HomeDetailFragment : Fragment(), HomeNavigator {
         })
 
         toHomeButton.setOnClickListener {
-            navigateBackToHome()
+            navigateBack()
         }
     }
 }

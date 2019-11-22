@@ -12,4 +12,5 @@
     <deepLink
         android:id="@+id/deepLink"
         app:uri="www.rewe.com/notifications" />
+
 </navigation>

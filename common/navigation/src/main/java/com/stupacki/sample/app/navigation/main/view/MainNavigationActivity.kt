@@ -25,9 +25,12 @@ abstract class MainNavigationActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main_navigation)
 
-        viewModel.bottomNavState.observe(this, Observer(::onBottomNavStateChange))
+        navController.setGraph(R.navigation.navigation_main)
 
-        bindNavigationViews()
+        bottomNavView.setupWithNavController(navController)
+        bottomNavView.inflateMenu(R.menu.bottom_nav_menu)
+
+        viewModel.bottomNavState.observe(this, Observer { onBottomNavStateChange(it) })
     }
 
     private fun onBottomNavStateChange(state: BottomNavVisibleState?) {
@@ -38,17 +41,10 @@ abstract class MainNavigationActivity : AppCompatActivity() {
     }
 
     private fun hideBottomNav() {
-        bottomNavView.visibility == View.GONE
+        bottomNavView.visibility = View.GONE
     }
 
     private fun showBottomNav() {
-        bottomNavView.visibility == View.VISIBLE
-    }
-
-    private fun bindNavigationViews() {
-        navController.setGraph(R.navigation.navigation_main)
-
-        bottomNavView.setupWithNavController(navController)
-        bottomNavView.inflateMenu(R.menu.bottom_nav_menu)
+        bottomNavView.visibility = View.VISIBLE
     }
 }
