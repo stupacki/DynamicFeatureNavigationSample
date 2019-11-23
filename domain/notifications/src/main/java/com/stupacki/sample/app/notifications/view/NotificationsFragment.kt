@@ -24,11 +24,18 @@ class NotificationsFragment : Fragment(), NotificationsNavigator {
         inflater.inflate(R.layout.fragment_notifications, container, false)
 
     @SuppressLint("LogNotTimber")
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        Log.i("OnActicityCreated", "Instance: $this")
+    }
+
+    @SuppressLint("LogNotTimber")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.text.observe(this.viewLifecycleOwner, Observer { notificationsTextView.text = it })
         toHomeFeatureButton.setOnClickListener { toHomeFeature() }
 
-        Log.i("Home Fragment ID", "Instance: $this")
+        Log.i("Fragment", "Instance: $this")
     }
 }

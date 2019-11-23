@@ -40,6 +40,6 @@ internal class HomeFragment : Fragment(), HomeNavigator {
             navigateToHomeDetail()
         }
 
-        Log.i("Home Fragment ID", "Instance: $this")
+        Log.i("Fragment", "Instance: $this")
     }
 }

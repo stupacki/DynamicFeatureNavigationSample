@@ -30,6 +30,6 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.i("Dashboard Fragment ID", "Instance: $this")
+        Log.i("Fragment", "Instance: $this")
     }
 }

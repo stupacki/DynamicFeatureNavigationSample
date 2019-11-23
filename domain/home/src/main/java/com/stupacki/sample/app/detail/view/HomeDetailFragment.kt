@@ -35,6 +35,6 @@ internal class HomeDetailFragment : Fragment(), HomeNavigator {
             navigateBack()
         }
 
-        Log.i("Home Detail Fragment ID", "Instance: $this")
+        Log.i("Fragment", "Instance: $this")
     }
 }
