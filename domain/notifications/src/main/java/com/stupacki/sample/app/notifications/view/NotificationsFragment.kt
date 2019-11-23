@@ -1,6 +1,8 @@
 package com.stupacki.sample.app.notifications.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,16 +20,15 @@ class NotificationsFragment : Fragment(), NotificationsNavigator {
     private val component by lazy { NotificationsComponent() }
     private val viewModel by component.viewModel<NotificationsViewModel>(this)
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View =
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         inflater.inflate(R.layout.fragment_notifications, container, false)
 
+    @SuppressLint("LogNotTimber")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.text.observe(this.viewLifecycleOwner, Observer { notificationsTextView.text = it })
         toHomeFeatureButton.setOnClickListener { toHomeFeature() }
+
+        Log.i("Home Fragment ID", "Instance: $this")
     }
 }

@@ -1,6 +1,8 @@
 package com.stupacki.sample.app.detail.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,13 +20,10 @@ internal class HomeDetailFragment : Fragment(), HomeNavigator {
     private val component by lazy { HomeDetailComponent() }
     private val viewModel by component.viewModel<HomeDetailViewModel>(this)
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View =
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         inflater.inflate(R.layout.fragment_home_detail, container, false)
 
+    @SuppressLint("LogNotTimber")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -35,5 +34,7 @@ internal class HomeDetailFragment : Fragment(), HomeNavigator {
         toHomeButton.setOnClickListener {
             navigateBack()
         }
+
+        Log.i("Home Detail Fragment ID", "Instance: $this")
     }
 }
