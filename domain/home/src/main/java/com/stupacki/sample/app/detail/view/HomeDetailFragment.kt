@@ -27,14 +27,11 @@ internal class HomeDetailFragment : Fragment(), HomeNavigator {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.text.observe(this.viewLifecycleOwner, Observer {
-            homeDetailTextView.text = it
-        })
-
-        toHomeButton.setOnClickListener {
-            navigateBack()
-        }
+        viewModel.text.observe(this.viewLifecycleOwner, Observer { homeDetailTextView.text = it })
+        toHomeButton.setOnClickListener { navigateBack() }
 
         Log.i("Fragment", "Instance: $this")
+
+        Log.i("Arguments", "${this.arguments}")
     }
 }

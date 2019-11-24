@@ -22,6 +22,10 @@
         <action
             android:id="@+id/toHome"
             app:destination="@id/navigationHome" />
+
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="www.rewe.com/home/details/{item_id}" />
     </fragment>
 
     <deepLink
