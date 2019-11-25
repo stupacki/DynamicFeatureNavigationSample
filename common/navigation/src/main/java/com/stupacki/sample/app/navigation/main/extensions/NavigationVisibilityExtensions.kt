@@ -24,11 +24,17 @@ private fun BottomNavigationView.close() {
     visibility = View.GONE
 }
 
-class NavigationDestinationVisibilityProvider(bottomNavigationView: BottomNavigationView): NavController.OnDestinationChangedListener {
+class NavigationDestinationVisibilityProvider(bottomNavigationView: BottomNavigationView) :
+    NavController.OnDestinationChangedListener {
 
-    private val navigationView: WeakReference<BottomNavigationView> = WeakReference( bottomNavigationView )
+    private val navigationView: WeakReference<BottomNavigationView> =
+        WeakReference(bottomNavigationView)
 
-    override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
+    override fun onDestinationChanged(
+        controller: NavController,
+        destination: NavDestination,
+        arguments: Bundle?
+    ) {
         when (shouldShowNavigation(destination)) {
             true -> navigationView.get()?.open()
             else -> navigationView.get()?.close()
@@ -43,19 +49,15 @@ class NavigationDestinationVisibilityProvider(bottomNavigationView: BottomNaviga
 
     private fun isDestinationInBottomNavigation(destination: NavDestination): Boolean =
         navigationView.get()?.let { bottomNavView ->
-            for (itemIndex in 0 until bottomNavView.menu.size()) {
-                val item: MenuItem = bottomNavView.menu.getItem(itemIndex)
-
-                var currentDestination: NavDestination? = destination
-                while (currentDestination?.id != item.itemId && currentDestination?.parent != null) {
-                    currentDestination = currentDestination.parent
-
-                    if (currentDestination?.id == item.itemId) {
-                        return true
-                    }
-                }
+            (0 until bottomNavView.menu.size()).mapNotNull { index ->
+                checkDestination(bottomNavView.menu.getItem(index), destination)
             }
-
-            return false
+                .contains(true)
         } ?: false
+
+    private fun checkDestination(item: MenuItem, destination: NavDestination?): Boolean =
+        when (destination?.id != item.itemId && destination?.parent != null) {
+            false -> checkDestination(item, destination?.parent)
+            else -> destination?.parent?.id == item.itemId
+        }
 }
